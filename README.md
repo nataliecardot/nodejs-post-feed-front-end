@@ -1,4 +1,4 @@
-# nodejs-post-feed-frontend
+# nodejs-post-feed-front-end
 
 This project comprises the front end for [nodejs-post-feed](https://github.com/nataliecardot/nodejs-post-feed).
 
