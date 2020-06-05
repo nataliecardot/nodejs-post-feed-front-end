@@ -9,27 +9,28 @@ class SinglePost extends Component {
     author: '',
     date: '',
     image: '',
-    content: ''
+    content: '',
   };
 
   componentDidMount() {
     const postId = this.props.match.params.postId;
-    fetch('URL')
-      .then(res => {
+    fetch(`http://localhost:8080/feed/post/${postId}`)
+      .then((res) => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch status');
         }
         return res.json();
       })
-      .then(resData => {
+      .then((resData) => {
         this.setState({
           title: resData.post.title,
           author: resData.post.creator.name,
+          image: `http://localhost:8080/${resData.post.imageUrl}`,
           date: new Date(resData.post.createdAt).toLocaleDateString('en-US'),
-          content: resData.post.content
+          content: resData.post.content,
         });
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
   }
