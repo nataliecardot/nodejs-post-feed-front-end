@@ -105,7 +105,13 @@ class Feed extends Component {
     this.setState({
       editLoading: true,
     });
-    // Set up data (with image!)
+    // Prepare form data with mixed content, text and file (can't use header of Content-Type: application/json unless it's text only -- file can't [or can't easily] be represented as text; instead have to use form data)
+    // FormData is built-in object offered by browser-side JS. It automatically sets the headers sent in request body to back end
+    const formData = new FormData();
+    formData.append('title', postData.title);
+    formData.append('content', postData.content);
+    // Should be named image since looking for field with than name in REST API
+    formData.append('image', postData.image);
     let url = 'http://localhost:8080/feed/post';
     let method = 'POST';
     if (this.state.editPost) {
@@ -114,14 +120,7 @@ class Feed extends Component {
 
     fetch(url, {
       method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      // stringify converts JS object to JSON
-      body: JSON.stringify({
-        title: postData.title,
-        content: postData.content,
-      }),
+      body: formData,
     })
       .then((res) => {
         if (res.status !== 200 && res.status !== 201) {
