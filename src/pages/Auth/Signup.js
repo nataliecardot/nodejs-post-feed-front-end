@@ -12,26 +12,26 @@ class Signup extends Component {
         value: '',
         valid: false,
         touched: false,
-        validators: [required, email]
+        validators: [required, email],
       },
       password: {
         value: '',
         valid: false,
         touched: false,
-        validators: [required, length({ min: 5 })]
+        validators: [required, length({ min: 5 })],
       },
       name: {
         value: '',
         valid: false,
         touched: false,
-        validators: [required]
+        validators: [required],
       },
-      formIsValid: false
-    }
+      formIsValid: false,
+    },
   };
 
   inputChangeHandler = (input, value) => {
-    this.setState(prevState => {
+    this.setState((prevState) => {
       let isValid = true;
       for (const validator of prevState.signupForm[input].validators) {
         isValid = isValid && validator(value);
@@ -41,8 +41,8 @@ class Signup extends Component {
         [input]: {
           ...prevState.signupForm[input],
           valid: isValid,
-          value: value
-        }
+          value: value,
+        },
       };
       let formIsValid = true;
       for (const inputName in updatedForm) {
@@ -50,21 +50,21 @@ class Signup extends Component {
       }
       return {
         signupForm: updatedForm,
-        formIsValid: formIsValid
+        formIsValid: formIsValid,
       };
     });
   };
 
-  inputBlurHandler = input => {
-    this.setState(prevState => {
+  inputBlurHandler = (input) => {
+    this.setState((prevState) => {
       return {
         signupForm: {
           ...prevState.signupForm,
           [input]: {
             ...prevState.signupForm[input],
-            touched: true
-          }
-        }
+            touched: true,
+          },
+        },
       };
     });
   };
@@ -72,10 +72,10 @@ class Signup extends Component {
   render() {
     return (
       <Auth>
-        <form onSubmit={e => this.props.onSignup(e, this.state)}>
+        <form onSubmit={(e) => this.props.onSignup(e, this.state)}>
           <Input
             id="email"
-            label="Your E-Mail"
+            label="Email"
             type="email"
             control="input"
             onChange={this.inputChangeHandler}
@@ -86,7 +86,7 @@ class Signup extends Component {
           />
           <Input
             id="name"
-            label="Your Name"
+            label="Name"
             type="text"
             control="input"
             onChange={this.inputChangeHandler}
