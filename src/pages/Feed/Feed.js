@@ -50,7 +50,15 @@ class Feed extends Component {
       page--;
       this.setState({ postPage: page });
     }
-    fetch(`http://localhost:8080/feed/posts?page=${page}`)
+    fetch(`http://localhost:8080/feed/posts?page=${page}`, {
+      headers: {
+        // Could pass token as query parameter but using a header to keep URl more simple/prettier
+        // A header for passing authentication info to the backend
+        // In server-side code, Authorization header is enabled in the middleware with the CORS headers (in app.js)
+        // Bearer is typically used for JSON web tokens, not necessary but a common convention
+        Authorization: `Bearer ${this.props.token}`,
+      },
+    })
       .then((res) => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch posts.');
