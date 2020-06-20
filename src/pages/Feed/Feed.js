@@ -42,6 +42,24 @@ class Feed extends Component {
     openSocket('http://localhost:8080');
   }
 
+  // This method will be called whenever a new post on another client is called, with WebSockets (done on back-end/server, in the code that runs when a new post is created [the createPost action/function in the feed.js controller], once IO instance, the connection first set up in app.js, is shared across files)
+  addPost = (post) => {
+    // With this, don't have to reload browser page; just change existing DOM
+    this.setState((prevState) => {
+      const updatedPosts = [...prevState.posts];
+      if (prevState.postPage === 1) {
+        if (prevState.posts.length >= 2) {
+          updatedPosts.pop();
+        }
+        updatedPosts.unshift(post);
+      }
+      return {
+        posts: updatedPosts,
+        totalPosts: prevState.totalPosts + 1,
+      };
+    });
+  };
+
   loadPosts = (direction) => {
     if (direction) {
       this.setState({ postsLoading: true, posts: [] });
