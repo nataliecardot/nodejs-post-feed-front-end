@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+// Exposes a function on client that opens a new connection/socket
+import openSocket from 'socket.io-client';
 
 import Post from '../../components/Feed/Post/Post';
 import Button from '../../components/Button/Button';
@@ -35,6 +37,9 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
+    // URL of server where you established socket.io
+    // WebSockets is built up on HTTP, so you use that
+    openSocket('http://localhost:8080');
   }
 
   loadPosts = (direction) => {
