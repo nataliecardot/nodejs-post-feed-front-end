@@ -24,7 +24,11 @@ class Feed extends Component {
   };
 
   componentDidMount() {
-    fetch('URL')
+    fetch('http://localhost:8080/auth/status', {
+      headers: {
+        Authorization: `Bearer ${this.props.token}`,
+      },
+    })
       .then((res) => {
         if (res.status !== 200) {
           throw new Error('Failed to fetch user status.');
@@ -37,9 +41,14 @@ class Feed extends Component {
       .catch(this.catchError);
 
     this.loadPosts();
-    // URL of server where you established socket.io
-    // WebSockets is built up on HTTP, so you use that
-    openSocket('http://localhost:8080');
+    // URL of server where socket.io was established (WebSockets is built up on HTTP)
+    // socket: connection that was opened
+    const socket = openSocket('http://localhost:8080');
+    socket.on('posts', (data) => {
+      if (data.action === 'create') {
+        this.addPost(data.post);
+      }
+    });
   }
 
   // This method will be called whenever a new post on another client is called, with WebSockets (done on back-end/server, in the code that runs when a new post is created [the createPost action/function in the feed.js controller], once IO instance, the connection first set up in app.js, is shared across files)
@@ -183,8 +192,6 @@ class Feed extends Component {
               (p) => p._id === prevState.editPost._id
             );
             updatedPosts[postIndex] = post;
-          } else if (prevState.posts.length < 2) {
-            updatedPosts = prevState.posts.concat(post);
           }
           return {
             posts: updatedPosts,
