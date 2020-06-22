@@ -252,7 +252,8 @@ class Feed extends Component {
       })
       .then((resData) => {
         console.log(resData);
-        this.loadPosts();
+        // Unneeded since called in callback of WebSockets listener for delete event
+        // this.loadPosts();
         // this.setState((prevState) => {
         //   const updatedPosts = prevState.posts.filter((p) => p._id !== postId);
         //   return { posts: updatedPosts, postsLoading: false };
